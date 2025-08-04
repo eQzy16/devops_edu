@@ -1,0 +1,11 @@
+ssh-keygen -f ~/.ssh/git
+ls .ssh/
+cat .ssh/git.pub
+git clone git@github.com:eQzy16/devops_edu.git
+cd devops_edu/
+ssh-keygen -f ~/.ssh/aws
+ls .ssh
+cd ~/git/devops_edu/
+git checkout -b network_part_2
+vim command_list
+
