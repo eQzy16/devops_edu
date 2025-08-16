@@ -1,0 +1,23 @@
+sudo dnf install httpd
+sudo dnf install git mc -y
+sudo dnf install ncdu
+ps aux
+systemctl status httpd
+sudo systemctl start httpd
+sudo systemctl enable httpd
+sudo dnf install stress
+stress --help
+stress -v -c 8 -m 2 -t 20s
+top
+ps aux | grep stress
+kill 27471
+lsblk
+mount --help
+sudo mkfs.ext4 /dev/nvme1n1
+sudo mount /dev/nvme1n1 /media/
+lsblk
+systemctl status httpd
+sudo ls /var/log/httpd/
+sudo tail -20 /var/log/httpd/access_log
+sudo tail -20 /var/log/httpd/error_log
+
