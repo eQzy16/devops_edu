@@ -1,0 +1,13 @@
+sudo yum install git patch -y
+git clone https://github.com/yaoweibin/nginx_upstream_check_module.git
+cd nginx-1.29.1/
+patch -p1 < ~/nginx_upstream_check_module/check.patch 
+./configure --conf-path=/etc/nginx/nginx.conf --error-log-path=/var/log/nginx/error.log --http-log-path=/var/log/nginx/access.log --with-debug --with-http_stub_status_module --add-module=/home/ec2-user/nginx_upstream_check_module --sbin-path=/usr/bin/nginx --with-http_ssl_module
+make
+make install
+cd /etc/nginx/
+mkdir ssl && cd ssl
+openssl req -newkey rsa:2048 -keyout domain.key -out domain.csr
+openssl x509 -signkey domain.key -in domain.csr -req -days 365 -out domain.crt 	
+nginx -s reload
+
