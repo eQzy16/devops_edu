@@ -1,0 +1,49 @@
+
+services:
+  
+  mysql:
+    image: mysql:5.6
+    container_name: eschool-mysql 
+    restart: unless-stopped
+    env_file:
+      - ./.env
+    environment:
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_ROOT_PASSWORD=${DATASOURCE_PASSWORD}
+      - MYSQL_PASSWORD=${DATASOURCE_PASSWORD}
+    ports:
+      - "3306:3306"
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 3s
+      timeout: 5s
+      retries: 5
+  backend:
+    container_name: eschool-backend
+    build:
+      context: .
+      dockerfile: backendBuild
+    ports:
+      - "8080:8080"
+    depends_on:
+      mysql:
+        condition: service_healthy
+    restart: unless-stopped
+    env_file:
+      - ./.env
+    
+  frontend:
+    container_name: eschool-frontend
+    build:
+      context: .
+      dockerfile: frontendBuild
+      args:
+        base_url: "http://localhost:8080"
+    ports:
+      - "80:80"
+    depends_on: 
+      - backend
+    restart: unless-stopped
+
+
+
